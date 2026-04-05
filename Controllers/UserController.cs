@@ -17,7 +17,7 @@ public class UserController : ControllerBase
     [HttpGet("TestConnection")]
     public DateTime TestConnection()
     {
-        return _dapper.LoadDataSingle<DateTime>("SELECT DATE()");
+        return _dapper.LoadDataSingle<DateTime>("SELECT GETDATE()");
     }
     [HttpGet("GetUsers/{testValue}")]
     public string[] GetUsers(string testValue)

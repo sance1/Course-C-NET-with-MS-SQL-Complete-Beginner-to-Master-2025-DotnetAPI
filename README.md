@@ -21,6 +21,7 @@ dotnet new webapp -o MyWeb
 dotnet sln add MyWeb/MyWeb.csproj
 
 how to running 
+dotnet watch run --this for runing codee
 dotnet run --project MyApi/MyApi.csproj
 dotnet run --project MyWeb/MyWeb.csproj
 running from folder
@@ -34,3 +35,4 @@ see the respon cmd for run in website
 VD 68 -AutoMapper
 VD 69 -Database Connection
 VD 70 - Http Launch
+VD 71 
