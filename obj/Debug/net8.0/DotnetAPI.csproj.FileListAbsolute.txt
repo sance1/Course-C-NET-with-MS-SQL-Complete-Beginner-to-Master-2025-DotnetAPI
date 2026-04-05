@@ -82,3 +82,4 @@ D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\swae.build.ex.cache
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\DotnetAPI.sourcelink.json
