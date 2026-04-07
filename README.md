@@ -4,7 +4,7 @@ Getting Started .net
 https://dotnet.microsoft.com/
 https://code.visualstudio.com/
 for extension
-C# Dev Kit
+C# Dev Kit  
 C#
 dont forget to instal github
 
@@ -34,5 +34,5 @@ see the respon cmd for run in website
 ******
 VD 68 -AutoMapper
 VD 69 -Database Connection
-VD 70 - Http Launch
-VD 71 
+VD 70 -Http Launch
+VD 71 -User Models
