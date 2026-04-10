@@ -32,7 +32,32 @@ Terminal 1: dotnet run --project MyApi
 Terminal 2: dotnet run --project MyWeb    
 see the respon cmd for run in website   
 ******  
-VD 68 -AutoMapper   
-VD 69 -Database Connection   
-VD 70 -Http Launch    
-VD 71 -User Models    
+VD-68 -AutoMapper   
+VD-69 -Database Connection   
+VD-70 -Http Launch    
+VD-71 -User Models, VD-72,    
+VD-73
+Berdasarkan dokumentasi Microsoft Learn, berikut perbedaannya: 
+Microsoft Learn
+Microsoft Learn
+[FromBody]: Data diambil dari isi pesan (body) (biasanya JSON).
+[FromQuery]: Data diambil dari URL query string (contoh: ?id=123).
+[FromRoute]: Data diambil dari route parameter (contoh: /api/user/{id}).
+[FromForm]: Data diambil dari postingan form HTML
+apakah boleh jika tidak menggunakan from body?
+Boleh saja, tetapi ada dua kondisi utama yang akan menentukan apakah kode kamu tetap jalan atau tidak:
+1. Jika Kamu Menggunakan Atribut [ApiController]
+Di ASP.NET Core modern, jika di atas class controller kamu ada tulisan [ApiController], kamu tidak wajib menuliskan [FromBody].
+Sistem sudah punya aturan otomatis (Inference Rules):
+Jika parameter kamu adalah Class/Objek (misal: User model), ASP.NET otomatis menganggapnya sebagai [FromBody].
+Jika parameter kamu adalah tipe dasar (misal: string nama, int id), ASP.NET otomatis menganggapnya sebagai [FromQuery].
+2. Jika Kamu TIDAK Menggunakan [ApiController]
+Jika kamu menggunakan controller biasa (seperti di MVC lama), maka kamu wajib menuliskan [FromBody] jika ingin mengambil data JSON. Tanpa itu, ASP.NET akan mencoba mencari data tersebut di URL (Query String) atau Form Data, dan variabel kamu akan berakhir null karena data JSON di dalam body tidak diperiksa.   
+IactionResult->return ok()->return ok(user)->untuk fungsi banwaan
+actionRestul->return user()
+gunakan ActionResult di kontroller, sedangkan direpository/serives gunakan langsung variable user ->class user nama_klas   
+
+
+
+
+
