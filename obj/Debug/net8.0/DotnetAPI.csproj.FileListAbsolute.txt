@@ -83,3 +83,9 @@ D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\swae.build.ex.cache
 D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\obj\Debug\net8.0\DotnetAPI.sourcelink.json
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\Course\C# .NET with MS SQL Complete Beginner to Master 2025\Project\DotnetAPI\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll

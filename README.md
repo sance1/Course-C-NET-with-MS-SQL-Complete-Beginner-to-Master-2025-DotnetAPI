@@ -55,7 +55,16 @@ Jika parameter kamu adalah tipe dasar (misal: string nama, int id), ASP.NET otom
 Jika kamu menggunakan controller biasa (seperti di MVC lama), maka kamu wajib menuliskan [FromBody] jika ingin mengambil data JSON. Tanpa itu, ASP.NET akan mencoba mencari data tersebut di URL (Query String) atau Form Data, dan variabel kamu akan berakhir null karena data JSON di dalam body tidak diperiksa.   
 IactionResult->return ok()->return ok(user)->untuk fungsi banwaan
 actionRestul->return user()
-gunakan ActionResult di kontroller, sedangkan direpository/serives gunakan langsung variable user ->class user nama_klas   
+gunakan ActionResult di kontroller, sedangkan direpository/serives gunakan langsung variable user ->class user nama_klas    
+VD-75,VD-77 EF Setup   
+dotnet add package Microsoft.EntityFrameworkCore 
+for fix an error HasDefaultSchema add this
+dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.13   
+*you need also match entityframeworkcore with type this  
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.13     
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.13
+VD-78.EF User Controller  
+    
 
 
 
