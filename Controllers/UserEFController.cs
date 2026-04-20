@@ -1,7 +1,9 @@
+using AutoMapper;
 using DotnetAPI.Data;
 using DotnetAPI.Dtos;
 using DotnetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DotnetAPI.Controllers;
 
@@ -11,12 +13,16 @@ namespace DotnetAPI.Controllers;
 public class UserEFController : ControllerBase
 {
     DataContextEF _entityFramework;
-
+    Mapper _mapper;
     public UserEFController(IConfiguration config)
     {
         _entityFramework = new DataContextEF(config);
-    }
 
+        _mapper = new Mapper(new MapperConfiguration(cfg =>{
+            cfg.CreateMap<UserToAddDto,User>();
+        },NullLoggerFactory.Instance));
+    }
+    // NullLoggerFactory.Instance => ini karna mapper baru/ yang individu klw perusahaan biasanya berbayar
     [HttpGet("GetUsers")]
     public IEnumerable<User> GetUsers()
     {
@@ -64,13 +70,14 @@ public class UserEFController : ControllerBase
     [HttpPost]
     public IActionResult AddUser(UserToAddDto user)
     {
-        User? userDb = new User();
+        User? userDb = _mapper.Map<User>(user);
+        // User? userDb = new User();
     
-        userDb.FirstName = user.FirstName;
-        userDb.LastName = user.LastName;
-        userDb.Email = user.Email;
-        userDb.Active = user.Active;
-        userDb.Gender = user.Gender;
+        // userDb.FirstName = user.FirstName;
+        // userDb.LastName = user.LastName;
+        // userDb.Email = user.Email;
+        // userDb.Active = user.Active;
+        // userDb.Gender = user.Gender;
 
         _entityFramework.Users.Add(userDb);
         if(_entityFramework.SaveChanges() > 0)
