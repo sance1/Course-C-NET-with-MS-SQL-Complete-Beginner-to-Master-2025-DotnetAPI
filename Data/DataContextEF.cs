@@ -12,7 +12,7 @@ namespace DotnetAPI.Data
         }
 
         public virtual DbSet<User> Users {get;set;}    
-        public virtual DbSet<UserSalary>UserSalaries {get;set;} 
+        public virtual DbSet<UserSalary> UserSalary {get;set;} 
         public virtual DbSet<UserJobInfo> UserJobInfos {get;set;}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

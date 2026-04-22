@@ -63,7 +63,28 @@ dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.13
 *you need also match entityframeworkcore with type this  
 dotnet add package Microsoft.EntityFrameworkCore --version 8.0.13     
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.13
-VD-78.EF User Controller VD-81     
+VD-78.EF User Controller VD-81.Beginner AssignmentSolutionDapper  
+1.create fungction GetUserSalary will return IEnumerable with parameter int userId   
+First = "Beri saya yang pertama, saya yakin ada."
+FirstOrDefault = "Beri saya yang pertama, kalau tidak ada ya sudah (null)."
+Single = "Beri saya satu-satunya, tidak boleh kosong, tidak boleh dua."
+SingleOrDefault = "Beri saya satu-satunya, kalau kosong boleh (null), tapi kalau ada dua itu salah."   
+
+try {
+    var user = _context.Users.SingleOrDefault(u => u.Email == email);
+} 
+catch (InvalidOperationException ex) {
+    // Oh, ini pasti karena datanya duplikat!
+}  
+public IEnumerable<User> GetActiveUsers(List<User> allUsers)
+{
+    // LINQ secara otomatis mengembalikan IEnumerable
+    return allUsers.Where(u => u.IsActive); 
+}   
+
+
+
+      
 
 
 
