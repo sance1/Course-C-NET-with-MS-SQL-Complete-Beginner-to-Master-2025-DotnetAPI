@@ -82,6 +82,8 @@ public IEnumerable<User> GetActiveUsers(List<User> allUsers)
     return allUsers.Where(u => u.IsActive); 
 }   
 
+dari 83  itu sudah entity dan bisa crud stelehnya itu lanjut repository  
+VD-85  
 
 
       
