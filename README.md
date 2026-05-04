@@ -83,7 +83,9 @@ public IEnumerable<User> GetActiveUsers(List<User> allUsers)
 }   
 
 dari 83  itu sudah entity dan bisa crud stelehnya itu lanjut repository  
-VD-85  
+VD-85|VD-89 Password Management(AuthController/Register)   
+VD-90 Login, VD-91,VD-92, VD-93       
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 
       
