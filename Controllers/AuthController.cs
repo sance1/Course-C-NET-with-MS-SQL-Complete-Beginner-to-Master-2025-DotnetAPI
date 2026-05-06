@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using DotnetAPI.Data;
 using DotnetAPI.Dtos;
+using DotnetAPI.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,13 @@ namespace DotnetAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly DataContextDapper _dapper;
-    private readonly IConfiguration _config;
+    // private readonly IConfiguration _config;
+    private readonly AuthHelpers _authHelpers;
     public AuthController(IConfiguration config)
     {
         _dapper = new DataContextDapper(config);
-        _config = config;
+        // _config = config;
+        _authHelpers = new AuthHelpers(config);
     }
      
     [AllowAnonymous]
@@ -42,7 +45,8 @@ public class AuthController : ControllerBase
                     rng.GetNonZeroBytes(passwordSalt);
                 }
 
-                    byte[] passwordHash = GetPasswordHash(userForRegistrationDto.Password, passwordSalt);
+                    // byte[] passwordHash = GetPasswordHash(userForRegistrationDto.Password, passwordSalt);
+                    byte[] passwordHash = _authHelpers.GetPasswordHash(userForRegistrationDto.Password, passwordSalt);
                     string sqlAddAuth = @"INSERT INTO TutorialAppSchema.Auth ([Email],
                     [PasswordHash],[PasswordSalt]) VALUES ('" + userForRegistrationDto.Email + "', @PasswordHash, @PasswordSalt)"; 
                 
@@ -96,7 +100,7 @@ public class AuthController : ControllerBase
         UserForLoginConfirmationDto userForConfirmation = _dapper
             .LoadDataSingle<UserForLoginConfirmationDto>(sqlForHashAndSalt);
         
-        byte[] passwordHash = GetPasswordHash(userForLogin.Password, userForConfirmation.PasswordSalt);
+        byte[] passwordHash = _authHelpers.GetPasswordHash(userForLogin.Password, userForConfirmation.PasswordSalt);
 
         // if(passwordHash == userForConfirmation.PasswordHash)
         // {
@@ -113,7 +117,7 @@ public class AuthController : ControllerBase
         SELECT UserId FROM TutorialAppSchema.Users WHERE Email = '" + userForLogin.Email + "'";
         int userId = _dapper.LoadDataSingle<int>(userIdSql);
         return Ok(new Dictionary<string, string>{
-            {"token", CreateToken(userId)}
+            {"token", _authHelpers.CreateToken(userId)}
         });
     }
 
@@ -126,49 +130,49 @@ public class AuthController : ControllerBase
         int userIdFromDb = _dapper.LoadDataSingle<int>(userIdSql);
         //return CreateToken(userIdFromDb);  
         return Ok(new Dictionary<string, string>{
-            {"token", CreateToken(userIdFromDb)}
+            {"token", _authHelpers.CreateToken(userIdFromDb)}
         });  
     }
-    private byte[] GetPasswordHash(string password,byte[] passwordSalt)
-    {
-        string passwordSaltPlusString = _config.GetSection("AppSettings:PasswodKey").Value + 
-                    Convert.ToBase64String(passwordSalt);
+    // private byte[] GetPasswordHash(string password,byte[] passwordSalt)
+    // {
+    //     string passwordSaltPlusString = _config.GetSection("AppSettings:PasswodKey").Value + 
+    //                 Convert.ToBase64String(passwordSalt);
 
-                    return KeyDerivation.Pbkdf2(
-                        password: password,
-                        salt: Encoding.ASCII.GetBytes(passwordSaltPlusString),
-                        prf: KeyDerivationPrf.HMACSHA256,
-                        iterationCount: 100000,
-                        numBytesRequested: 256 / 8
-                    );
-    }
+    //                 return KeyDerivation.Pbkdf2(
+    //                     password: password,
+    //                     salt: Encoding.ASCII.GetBytes(passwordSaltPlusString),
+    //                     prf: KeyDerivationPrf.HMACSHA256,
+    //                     iterationCount: 100000,
+    //                     numBytesRequested: 256 / 8
+    //                 );
+    // }
 
-    private string CreateToken(int userId)
-    {
-        Claim[] clams = new Claim[]{
-            new Claim("userId", userId.ToString())
-        };
+    // private string CreateToken(int userId)
+    // {
+    //     Claim[] clams = new Claim[]{
+    //         new Claim("userId", userId.ToString())
+    //     };
         
-        string? tokenKeyString = _config.GetSection("AppSettings:TokenKey").Value;
-        SymmetricSecurityKey tokenKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(
-                tokenKeyString != null ? tokenKeyString : ""
-            )
-        );
+    //     string? tokenKeyString = _config.GetSection("AppSettings:TokenKey").Value;
+    //     SymmetricSecurityKey tokenKey = new SymmetricSecurityKey(
+    //         Encoding.UTF8.GetBytes(
+    //             tokenKeyString != null ? tokenKeyString : ""
+    //         )
+    //     );
 
-        SigningCredentials credentials = new SigningCredentials(
-            tokenKey, 
-            SecurityAlgorithms.HmacSha512Signature
-           );
-        SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
-        {
-            Subject = new ClaimsIdentity(clams),
-            SigningCredentials = credentials,
-            Expires = DateTime.Now.AddDays(1)
+    //     SigningCredentials credentials = new SigningCredentials(
+    //         tokenKey, 
+    //         SecurityAlgorithms.HmacSha512Signature
+    //        );
+    //     SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
+    //     {
+    //         Subject = new ClaimsIdentity(clams),
+    //         SigningCredentials = credentials,
+    //         Expires = DateTime.Now.AddDays(1)
             
-        };
-        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        SecurityToken token = tokenHandler.CreateToken(descriptor);
-        return tokenHandler.WriteToken(token);
-    }
+    //     };
+    //     JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+    //     SecurityToken token = tokenHandler.CreateToken(descriptor);
+    //     return tokenHandler.WriteToken(token);
+    // }
 }

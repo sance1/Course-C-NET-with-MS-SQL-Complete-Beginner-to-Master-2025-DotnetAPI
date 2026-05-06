@@ -85,7 +85,21 @@ public IEnumerable<User> GetActiveUsers(List<User> allUsers)
 dari 83  itu sudah entity dan bisa crud stelehnya itu lanjut repository  
 VD-85|VD-89 Password Management(AuthController/Register)   
 VD-90 Login, VD-91,VD-92, VD-93       
-dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer  
+VD-96
+
+CREATE TABLE TutorialAppShema.Post (
+    PostId INT IDENTITY(1,1),
+    UserId INT,
+    PostTitle NVARCHAR(255),
+    PostContent NVARCHAR(MAX),
+    PostCreated DATETIME,
+    LastUpdated DATETIME
+)
+
+CREATE CLUSTERED INDEX cix_Post_UserId_PostId on TutorialAppSchema.Post(UserId, PostId)
+VD-97, VD-98  
+
 
 
       

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj": {}
+    "d:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj": {}
   },
   "projects": {
-    "D:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj": {
+    "d:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj",
+        "projectUniqueName": "d:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj",
         "projectName": "DotnetAPI",
-        "projectPath": "D:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj",
+        "projectPath": "d:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\DotnetAPI.csproj",
         "packagesPath": "C:\\Users\\sance\\.nuget\\packages\\",
-        "outputPath": "D:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\obj\\",
+        "outputPath": "d:\\Course\\C# .NET with MS SQL Complete Beginner to Master 2025\\Project\\DotnetAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sance\\AppData\\Roaming\\NuGet\\NuGet.Config"
