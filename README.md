@@ -98,7 +98,40 @@ CREATE TABLE TutorialAppShema.Post (
 )
 
 CREATE CLUSTERED INDEX cix_Post_UserId_PostId on TutorialAppSchema.Post(UserId, PostId)
-VD-97, VD-98  
+VD-97, VD-98,VD-100,  
+USE [DotNetCourseDatabase]
+GO
+/****** Object:  StoredProcedure [TutorialAppSchema].[spUsers_Get]    Script Date: 5/9/2026 6:42:14 AM ******/
+
+ALTER PROCEDURE [TutorialAppSchema].[spUsers_Get]
+--EXEC TutorialAppSchema.spUsers_Get @UserId=1, @RunFilter=1
+	@RunFilter BIT
+	, @UserId INT
+AS
+BEGIN
+	SELECT UserId, FirstName,
+	LastName, Email, Gender, Active
+FROM TutorialAppSchema.Users As Users
+WHERE Users.UserId = @UserId
+ENDUSE [DotNetCourseDatabase]
+GO
+/****** Object:  StoredProcedure [TutorialAppSchema].[spUsers_Get]    Script Date: 5/9/2026 6:42:14 AM ******/
+
+ALTER PROCEDURE [TutorialAppSchema].[spUsers_Get]
+--EXEC TutorialAppSchema.spUsers_Get @UserId=1, @RunFilter=1
+	@RunFilter BIT
+	, @UserId INT
+AS
+BEGIN
+	SELECT UserId, FirstName,
+	LastName, Email, Gender, Active
+FROM TutorialAppSchema.Users As Users
+WHERE Users.UserId = @UserId
+END   
+-- WHERE Users.UserId = ISNULL(@UserId,Users.Userid) -> the result same with not useing where statement  
+Filter doest have value,,
+VD-102 Outer Applay  
+
 
 
 
