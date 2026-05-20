@@ -131,6 +131,251 @@ END
 -- WHERE Users.UserId = ISNULL(@UserId,Users.Userid) -> the result same with not useing where statement  
 Filter doest have value,,
 VD-102 Outer Applay  
+USE [DotNetCourseDatabase]
+GO
+
+ALTER PROCEDURE [TutorialAppSchema].[spUsers_Get]
+--EXEC TutorialAppSchema.spUsers_Get 1004
+-- @RunFilter BIT
+	 @UserId INT = null	
+AS
+BEGIN
+	Select
+		[Users].[UserId],
+		[Users].[FirstName],
+		[Users].[LastName],
+		[Users].[Email],
+		[Users].[Gender],
+		[Users].Active,
+		UserSalary.Salary,
+		UserJobInfo.Department,
+		UserJobInfo.JobTitle,
+		AvgSalary.AvgSalary
+	from TutorialAppSchema.Users as Users
+	Left join TutorialAppSchema.UserSalary as UserSalary
+	on UserSalary.UserId = Users.UserId
+	Left join TutorialAppSchema.UserJobInfo as UserJobInfo
+	on UserJobInfo.UserId = Users.UserId
+	Outer Apply(
+		Select AVG(UserSalary.Salary) as AvgSalary
+		from TutorialAppSchema.Users as Users
+		Left join TutorialAppSchema.UserSalary as UserSalary
+		on UserSalary.UserId = Users.UserId
+		Left join TutorialAppSchema.UserJobInfo as UserJobInfo2
+		on UserJobInfo.UserId = Users.UserId
+		Where UserJobInfo2.Department = UserJobInfo.Department
+		Group by Department
+	) as AvgSalary
+	Where Users.UserId = ISNULL(@UserId, Users.UserId)
+END    
+VD-103  
+USE [DotNetCourseDatabase]
+GO
+
+ALTER PROCEDURE [TutorialAppSchema].[spUsers_Get]
+--EXEC TutorialAppSchema.spUsers_Get @UserId = 1004
+-- @RunFilter BIT
+	 @UserId INT = NULL
+	 , @Active BIT = NULL
+AS
+BEGIN
+	--IF OBJECT_ID('tempdb..#AverageDeptSalary', 'U') IS NOT NULL
+	--BEGIN
+	--	DROP TABLE #AverageDeptSalary
+	--END
+	
+	DROP TABLE IF EXISTS #AverageDeptSalary
+	
+	Select AVG(UserSalary.Salary) as AvgSalary
+		, UserJobInfo.Department
+		Into #AverageDeptSalary
+		from TutorialAppSchema.Users as Users
+		Left join TutorialAppSchema.UserSalary as UserSalary
+		on UserSalary.UserId = Users.UserId
+		Left join TutorialAppSchema.UserJobInfo as UserJobInfo
+		on UserJobInfo.UserId = Users.UserId
+		Group by Department
+	
+	Select
+		[Users].[UserId],
+		[Users].[FirstName],
+		[Users].[LastName],
+		[Users].[Email],
+		[Users].[Gender],
+		[Users].Active,
+		UserSalary.Salary,
+		UserJobInfo.Department,
+		UserJobInfo.JobTitle,
+		AvgSalary.AvgSalary
+	from TutorialAppSchema.Users as Users
+	Left join TutorialAppSchema.UserSalary as UserSalary
+	on UserSalary.UserId = Users.UserId
+	Left join TutorialAppSchema.UserJobInfo as UserJobInfo
+	on UserJobInfo.UserId = Users.UserId
+	left join #AverageDeptSalary as AvgSalary
+	on AvgSalary.Department = UserJobInfo.Department
+	--Outer Apply(
+	--	Select AVG(UserSalary.Salary) as AvgSalary
+	--	from TutorialAppSchema.Users as Users
+	--	Left join TutorialAppSchema.UserSalary as UserSalary2
+	--	on UserSalary2.UserId = Users.UserId
+	--	Left join TutorialAppSchema.UserJobInfo as UserJobInfo2
+	--	on UserJobInfo.UserId = Users.UserId
+	--	Where UserJobInfo2.Department = UserJobInfo.Department
+	--	Group by Department
+	--) as AvgSalary
+	Where Users.UserId = ISNULL(@UserId, Users.UserId)
+		And ISNULL(Users.Active, 0) = COALESCE(@Active, Users.Active, 0)
+END
+
+--SELECT CASE WHEN NULL = NULL then 1 Else 0 End
+--	,Case When Null <> NUll then 1 Else 0 End;
+
+VD-104  
+go
+CREATE OR ALTER PROCEDURE tutorialAppschema.spUser_Upset
+	@FirstName NVARCHAR(50) ,
+	@LastName NVARCHAR(50) ,
+	@Email NVARCHAR(50) ,
+	@Gender NVARCHAR(50) ,
+	@Active BIT,
+	@UserId INT = NULL
+AS
+BEGIN
+	--SELECT GETDATE();
+	IF NOT EXISTS(SELECT * FROM TutorialAppSchema.Users WHERE UserId = @UserId)
+		BEGIN
+			IF NOT EXISTS(SELECT * FROM TutorialAppSchema.Users WHERE Email = @UserId)
+			BEGIN
+				INSERT INTO TutorialAppSchema.Users(
+				FirstName,
+				LastName,
+				Email,
+				Gender,
+				Active
+			) VALUES (
+				@FirstName,
+				@LastName,
+				@Email,
+				@gender,
+				@Active
+			)
+			END
+		END
+	ELSE
+		BEGIN
+			UPDATE TutorialAppSchema.Users
+				SET FirstName = @FirstName,
+					LastName = @LastName,
+					Email = @Email,
+					gender = @Gender,
+					Active = @Active
+			WHERE UserId = @UserId
+		END
+END    
+VD-105
+
+USE [DotNetCourseDatabase]
+GO
+
+ALTER   PROCEDURE [TutorialAppSchema].[spUser_Upset]
+	@FirstName NVARCHAR(50) ,
+	@LastName NVARCHAR(50) ,
+	@Email NVARCHAR(50) ,
+	@Gender NVARCHAR(50) ,
+	@JobTitle NVARCHAR(50),
+	@Department NVARCHAR(50),
+	@Salary DECIMAL(18, 4),
+	@Active BIT,
+	@UserId INT = NULL
+AS
+BEGIN
+	--SELECT GETDATE();
+	IF NOT EXISTS(SELECT * FROM TutorialAppSchema.Users WHERE UserId = @UserId)
+		BEGIN
+			IF NOT EXISTS(SELECT * FROM TutorialAppSchema.Users WHERE Email = @Email)
+			BEGIN
+				DECLARE @OutputUserId INT
+				INSERT INTO TutorialAppSchema.Users(
+				FirstName,
+				LastName,
+				Email,
+				Gender,
+				Active
+			) VALUES (
+				@FirstName,
+				@LastName,
+				@Email,
+				@gender,
+				@Active
+			)
+
+			SET @OutputUserId = @@IDENTITY	
+			
+			INSERT INTO TutorialAppSchema.UserSalary(
+				UserId,
+				Salary			
+			) VALUES (
+				@OutputUserId,
+				@Salary
+			)
+			INSERT INTO TutorialAppSchema.UserJobInfo(
+				UserId,
+				Department,
+				JobTitle
+			) VALUES (
+				@OutputUserId,
+				@Department,
+				@JobTitle
+			)
+			END
+		END
+	ELSE
+		BEGIN
+			UPDATE TutorialAppSchema.Users
+				SET FirstName = @FirstName,
+					LastName = @LastName,
+					Email = @Email,
+					gender = @Gender,
+					Active = @Active
+			WHERE UserId = @UserId
+
+			UPDATE TutorialAppSchema.UserSalary
+				SET Salary = @Salary
+				WHERE UserId = @UserId
+			UPDATE TutorialAppSchema.UserJobInfo
+				SET JobTitle = @JobTitle,
+					Department = @Department
+				WHERE UserId = @UserId
+		END
+END
+
+--select @@TRANCOUNT
+--commit
+
+--Rollback
+--exec TutorialAppSchema.spUsers_Get    
+
+VD-106  
+USE [DotNetCourseDatabase]
+GO
+
+ALTER PROCEDURE [TutorialAppSchema].[spUser_Delete]
+	@UserId INT
+AS
+BEGIN
+	DELETE FROM TutorialAppSchema.Users
+		WHERE UserId = @UserId
+	DELETE FROM TutorialAppSchema.UserSalary
+		WHERE UserId = @UserId
+	DELETE FROM TutorialAppSchema.UserJobInfo
+		WHERE UserId = @UserId
+END   
+VD-107  
+
+
+
+
 
 
 
