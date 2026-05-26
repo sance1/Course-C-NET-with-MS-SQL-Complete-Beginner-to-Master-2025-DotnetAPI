@@ -8,10 +8,11 @@ namespace DotnetAPI.Controllers;
 [ApiController]
 [Route("[controller]")]
 
+ 
 public class UserController : ControllerBase
 {
     DataContextDapper _dapper;
-
+    //UserController -> constructor 
     public UserController(IConfiguration config)
     {
         _dapper = new DataContextDapper(config);

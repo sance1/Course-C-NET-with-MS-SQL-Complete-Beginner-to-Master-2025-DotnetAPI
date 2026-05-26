@@ -372,6 +372,130 @@ BEGIN
 		WHERE UserId = @UserId
 END   
 VD-107  
+USE DotNetCourseDatabase
+GO
+
+CREATE OR ALTER PROCEDURE TutorialAppSchema.spPosts_Get
+/*EXEC TutorialAppSchema.spPosts_Get @UserId= 1004,@SearchValue = 'second'*/
+/*EXEC TutorialAppSchema.spPosts_Get @PostId = 1*/
+	@UserId INT = NULL
+	, @SearchValue NVARCHAR(MAX) = NULL
+	, @PostId INT = NULl
+AS
+BEGIN
+	SELECT [Posts].[PostId],
+		   [Posts].[UserId],
+		   [Posts].[PostTitle],
+		   [Posts].[PostContent],
+		   [Posts].[PostCreated],
+		   [Posts].[LastUpdated]
+	FROM TutorialAppSchema.Post AS Posts
+		WHERE Posts.UserId = ISNULL(@UserId, Posts.UserId)
+			AND Posts.PostId = ISNULL(@PostId, Posts.PostId)
+			AND(@SearchValue IS NULL
+				OR Posts.PostContent  LIKE '%' +@SearchValue+ '%'
+				OR Posts.PostTitle LIKE '%' +@SearchValue+ '%')
+END    
+VD-108   
+use DotNetCourseDatabase
+Go
+CREATE PROCEDURE spPost_Upset
+	@UserId INT,
+	@PostTitle NVARCHAR(255),
+	@PostContent NVARCHAR(MAX),
+	@PostId INT = NULl
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM TutorialAppSchema.Post WHERE PostId = @PostId)
+		BEGIN
+			INSERT INTO TutorialAppSchema.Post(
+				[UserId],
+				[PostTitle],
+				[PostContent],
+				[PostCreated],
+				[LastUpdated]
+			)VALUES(
+				@UserId,
+				@PostTitle,
+				@PostContent,
+				GETDATE(),
+				GETDATE()		
+			)
+		END
+	ELSE
+		BEGIN
+			 UPDATE TutorialAppSchema.Post
+			 SET PostTitle = @PostTitle,
+				 PostContent = @PostContent,
+				 LastUpdated = GETDATE()
+			 WHERE PostId = @PostId
+		END
+
+
+END   
+VD-109   
+USE DotNetCourseDatabase
+GO
+
+CREATE OR ALTER PROCEDURE TutorialAppSchema.spPost_Delete
+	@PostId INT
+	, @UserId Int
+AS
+BEGIN
+	DELETE FROM TutorialAppSchema.Post 
+		WHERE PostId =  @PostId
+			AND UserId =  @UserId
+END     
+VD-110  
+USE DotNetCourseDatabase
+GO
+
+CREATE OR ALTER PROCEDURE TutorialAppSchema.spRegistration_Upsert
+	@Email NVARCHAR(50),
+	@PasswordHash VARBINARY(MAX),
+	@PasswordSalt VARBINARY(MAX)
+AS
+BEGIN
+	IF NOT EXISTS(SELECT * FROM	TutorialAppSchema.Auth WHERE Email = @Email)
+		BEGIN
+			INSERT INTO TutorialAppSchema.Auth(
+				[Email],
+				[PasswordHash],
+				[PasswordSalt]			
+			)VALUES(
+				@Email,
+				@PasswordHash,
+				@PasswordSalt
+			)
+		END
+	ELSE
+		BEGIN
+			UPDATE TutorialAppSchema.Auth
+				SET PasswordHash =  @PasswordHash,
+					PasswordSalt = @PasswordSalt
+				WHERE Email = @Email
+		END  
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE TutorialAppSchema.spLoginConfirmation_Get
+	@Email NVARCHAR(50)
+AS
+BEGIN
+	SELECT [Auth].[PasswordHash],
+		[Auth].[PasswordSalt]
+	FROM TutorialAppSchema.Auth AS Auth
+		WHERE Auth.Email = @Email
+END   
+VD-111  API-Advanced   
+
+
+
+
+
+
+
 
 
 
