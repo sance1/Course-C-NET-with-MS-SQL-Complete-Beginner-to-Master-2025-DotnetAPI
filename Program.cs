@@ -30,7 +30,7 @@ builder.Services.AddCors((options) =>
             });
     });
  
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // string? tokenKeyString = _config.GetSection("AppSettings:TokenKey").Value;
  string? tokenKeyString = builder.Configuration.GetSection("AppSettings:TokenKey").Value;

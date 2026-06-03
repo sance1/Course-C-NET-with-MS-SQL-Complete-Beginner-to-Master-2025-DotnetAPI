@@ -22,11 +22,13 @@ public class AuthController : ControllerBase
     private readonly DataContextDapper _dapper;
     // private readonly IConfiguration _config;
     private readonly AuthHelpers _authHelpers;
+    private readonly ReusableSql _reusableSql;
     public AuthController(IConfiguration config)
     {
         _dapper = new DataContextDapper(config);
         // _config = config;
         _authHelpers = new AuthHelpers(config);
+        _reusableSql = new ReusableSql(config);
     }
      
     [AllowAnonymous]
