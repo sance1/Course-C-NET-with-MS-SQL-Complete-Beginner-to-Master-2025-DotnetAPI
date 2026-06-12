@@ -2,7 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using Dapper;
+using DotnetAPI.Models;
 using DotnetAPI.Data;
 using DotnetAPI.Dtos;
 using DotnetAPI.Helpers;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DotnetAPI.Controllers;
@@ -23,12 +26,16 @@ public class AuthController : ControllerBase
     // private readonly IConfiguration _config;
     private readonly AuthHelpers _authHelpers;
     private readonly ReusableSql _reusableSql;
+    private readonly IMapper _mapper;
     public AuthController(IConfiguration config)
     {
         _dapper = new DataContextDapper(config);
         // _config = config;
         _authHelpers = new AuthHelpers(config);
         _reusableSql = new ReusableSql(config);
+        _mapper = new Mapper(new MapperConfiguration(cfg => {
+            cfg.CreateMap<UserForRegistrationDto, UserComplete>();
+        }, NullLoggerFactory.Instance));      
     }
      
     [AllowAnonymous]
@@ -83,15 +90,18 @@ public class AuthController : ControllerBase
                     Password = userForRegistrationDto.Password
                 };
                 if(_authHelpers.SetPassword(userForSetPassword)){
-                    string sqlAddUser = @"EXEC TutorialAppSchema.spUser_Upsert 
-                    @FirstName = '" + userForRegistrationDto.FirstName + 
-                    "', @LastName = '" + userForRegistrationDto.LastName + 
-                    "', @Email = '" + userForRegistrationDto.Email +    
-                    "', @Gender = '" + userForRegistrationDto.Gender +                     
-                    "', @JobTitle = '" + userForRegistrationDto.JobTitle + 
-                    "', @Department = '" + userForRegistrationDto.Department +
-                    "', @Salary = " + userForRegistrationDto.Salary +
-                    ", @Active = 1";
+                    
+                    DotnetAPI.Models.UserComplete userComplete = _mapper.Map<DotnetAPI.Models.UserComplete>(userForRegistrationDto);
+                    userComplete.Active = true; 
+                    // string sqlAddUser = @"EXEC TutorialAppSchema.spUser_Upsert 
+                    // @FirstName = '" + userForRegistrationDto.FirstName + 
+                    // "', @LastName = '" + userForRegistrationDto.LastName + 
+                    // "', @Email = '" + userForRegistrationDto.Email +    
+                    // "', @Gender = '" + userForRegistrationDto.Gender +                     
+                    // "', @JobTitle = '" + userForRegistrationDto.JobTitle + 
+                    // "', @Department = '" + userForRegistrationDto.Department +
+                    // "', @Salary = " + userForRegistrationDto.Salary +
+                    // ", @Active = 1";
                      
                      
                     
@@ -108,7 +118,11 @@ public class AuthController : ControllerBase
                     //         "','" + userForRegistrationDto.Email +
                     //         "','" + userForRegistrationDto.Gender +
                     //         "', 1)";
-                    if(_dapper.ExecuteSql(sqlAddUser))
+                    // if(_dapper.ExecuteSql(sqlAddUser))
+                    // {
+                    //     return Ok();
+                    // }
+                    if(_reusableSql.UpsertUser(userComplete))
                     {
                         return Ok();
                     }
