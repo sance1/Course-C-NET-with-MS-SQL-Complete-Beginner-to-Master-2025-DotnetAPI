@@ -490,6 +490,100 @@ BEGIN
 END   
 VD-111  API-Advanced   
 
+VD128  
+ex => publish and connecti azure 
+az login => type this command in cmd
+then you need to login in your microsoft account
+dotnet build --configuration Release (in cmd type this)
+az webapp up --sku F1 --name "DTCodeAPI1" --on-type linux (cmd)
+the tutor edit file the type this again for redeploy aplication
+az webapp up --sku F1 --name "DTCodeAPI1" --on-type linux (cmd)
+then url in cmd will be display, you need to copy and test that url 
+ex : http://your-web/test
+test in here same with TestController and in code
+[HttpGet]
+public int string test(){}  
+
+See in portal.azure
+search APP services in here you will see all folder DotnetAPI and url has been created 
+
+VD129
+ex => create database in azure
+in portal azure, search sql data,then choose sql database
+click create sql database then fill the data in formulir web
+databasename DTCodeDatabse1
+server -> create new 
+Server name -> dtcode-server
+server admin login -> azadmin
+password -> DTCode1! 
+the will back to page sql
+find configuration database 9:46 
+service tier -> basic
+change storeage -> 0.1
+then will back to sql page
+backoup storage redundncy -> locally-redundant backup storeage 11.35
+change to networking menu
+Connecivity method -> Public endpoint  
+allow azure services and resources to access this server -> yes
+add current client ip address -> yes
+additioanl settings, tags, Review + create. Ignore this menu 
+then click create button
+after finish click goto resources button 18:13 
+click title then copy server name text
+open sql or azure 
+connect the database in local and azure like usually
+then klik new query and put the query from url https://github.com/DomTripodi93/DotNetAPICourse/tree/main/APIDeployScripts   
+VD130
+ex => clone the database then change the setting to azure setting database
+clone SQLSeed from https://github.com/DomTripodi93/DotNetAPICourse/tree/main/SQLSeed 
+open your project DotnetAPI
+goto appsettings.json
+goto microsoft azure to find the connection string use ADO.NET 
+VD131
+ex => change appsetting and use local for testing  
+goto your project DotnetAPI
+change the appsetting.json to azure like the previous topic 
+after change the connection type in cmd dotnet watch run 
+try Regitter web swager, and posman as well,
+dont forget to input Bearer token in Headers posman 
+url still use local  
+VD132
+dotnet build --configuration Release (cmd)
+Re Deploy
+az webapp up --sku F1 --name DTCodeAPI1 --os-type linux (cmd)  
+url will be show http://nama_web/test then http://nama_web/test/connection  
+VD133
+ex => delete all becouse need be charge if not
+find SQLDatabase click file then delete  
+find in search sql server click file click tree dot in right side then delete 
+click skip feedback 
+then find search to make sure by typing sql databases you well see the database enymore 
+then find sql server again
+find seach app services then click file then click delete button, then click app servicess 
+again to make sure 
+find search app service plans
+find search resource groups click file then delete resource group (5.58)
+az group delete --name "namagroupyangadadiwebmicrosoftazure"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
 
 
 
