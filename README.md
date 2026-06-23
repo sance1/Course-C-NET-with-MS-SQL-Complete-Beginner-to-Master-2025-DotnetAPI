@@ -8,6 +8,42 @@ C# Dev Kit
 C#  
 dont forget to instal github  
 
+VD59
+dotnet new console //for create console test first if you want
+dotnet new webapi -n CrudEntityFramework
+
+Change Become commnet in program.cs
+//builder.Services.AddOpenApi();
+//app.MapOpenApi();
+tambahkan 
+else
+{
+    app.UseHttpsRedirection();
+}
+change to comment
+// var summaries = new[]
+// {
+//     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+// };
+
+// app.MapGet("/weatherforecast", () =>
+// {
+//     var forecast =  Enumerable.Range(1, 5).Select(index =>
+//         new WeatherForecast
+//         (
+//             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//             Random.Shared.Next(-20, 55),
+//             summaries[Random.Shared.Next(summaries.Length)]
+//         ))
+//         .ToArray();
+//     return forecast;
+// })
+// .WithName("GetWeatherForecast");
+
+dotnet add package Swashbuckle.AspNetCore   
+
+
+====
 create webapi dan webapp in one folder  
 1Buat Folder Utama & Solution:  
 mkdir MyProject  
